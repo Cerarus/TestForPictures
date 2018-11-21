@@ -16,16 +16,16 @@ public class Picture
 	private Graphics2D g2d;
 	private int imageHeight, imageWidth, oneMeterHeight, oneMeterWidth, zeroHeight, zeroWidth;
 
-	Stroke solid1 = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL);
-	Stroke solid2 = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL);
+	private Stroke solid1 = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL);
+	private Stroke solid2 = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL);
 
-	Stroke dotted1 = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]
+	private Stroke dotted1 = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]
 	{
 			1, 1
 	}, 0);
 
 	private ArrayList<Couple> couples;
-	int numberOfCouples = 0;
+	private int numberOfCouples = 0;
 
 	public Picture(int numOfCouples, int imageWidth, int imageHeight)
 	{
@@ -48,28 +48,27 @@ public class Picture
 		g2d.fillRect(0, 0, imageWidth, imageHeight);
 		g2d.setColor(Color.GRAY);
 
-		// g2d.setStroke(dashed);
 		g2d.setStroke(solid1);
 		for (int i = -9; i <= 9; i++)
 		{
-			// g2d.drawLine(0, zeroWidth + oneMeterWidth * i, imageHeight, zeroWidth +
-			// oneMeterWidth * i);
 			g2d.drawLine(0, zeroHeight + oneMeterHeight * i, imageWidth, zeroHeight + oneMeterHeight * i);
 			g2d.drawLine(zeroWidth + oneMeterWidth * i, 0, zeroWidth + oneMeterWidth * i, imageHeight);
 		}
 		g2d.setStroke(dotted1);
 		for (int i = -9; i <= 10; i++)
 		{
-			// g2d.drawLine(0, zeroWidth + oneMeterWidth * i, imageHeight, zeroWidth +
-			// oneMeterWidth * i);
+
 			g2d.drawLine(0, zeroHeight + oneMeterHeight * i - oneMeterHeight / 2, imageWidth,
 					zeroHeight + oneMeterHeight * i - oneMeterHeight / 2);
 			g2d.drawLine(zeroWidth + oneMeterWidth * i - oneMeterWidth / 2, 0,
 					zeroWidth + oneMeterWidth * i - oneMeterWidth / 2, imageHeight);
 		}
 		g2d.setStroke(solid2);
+		drawDiamond(1);
+		drawDiamond(8);
+		
+		
 		g2d.setColor(Color.RED.darker());
-		// g2d.drawLine(0, zeroWidth, imageHeight, zeroWidth);
 		g2d.drawLine(0, zeroHeight, imageWidth, zeroHeight);
 		g2d.drawLine(zeroWidth, 0, zeroWidth, imageHeight);
 		g2d.setColor(Color.CYAN.darker());
@@ -82,13 +81,23 @@ public class Picture
 		g2d.setFont(new Font("Courier", Font.BOLD, oneMeterWidth / 4));
 		for (int i = -10; i <= 9; i++)
 		{
-			g2d.drawString(String.format("%1$2s", String.valueOf(i)), zeroWidth + 5 + oneMeterWidth * i, zeroHeight + oneMeterHeight / 4);
+			g2d.drawString(String.format("%1$2s", String.valueOf(i)), zeroWidth + 5 + oneMeterWidth * i,
+					zeroHeight + oneMeterHeight / 4);
 		}
 		for (int i = -10; i <= 9; i++)
 		{
-			g2d.drawString(String.format("%1$2s", String.valueOf(i)), zeroWidth + 5, zeroHeight + oneMeterHeight / 4 + oneMeterHeight * i);
+			g2d.drawString(String.format("%1$2s", String.valueOf(i)), zeroWidth + 5,
+					zeroHeight + oneMeterHeight / 4 + oneMeterHeight * i);
 		}
 
+	}
+
+	private void drawDiamond(int size)
+	{
+		g2d.drawLine(zeroHeight, zeroWidth + oneMeterWidth * size, zeroHeight + oneMeterHeight * size, zeroWidth);
+		g2d.drawLine(zeroHeight, zeroWidth - oneMeterWidth * size, zeroHeight + oneMeterHeight * size, zeroWidth);
+		g2d.drawLine(zeroHeight, zeroWidth + oneMeterWidth * size, zeroHeight - oneMeterHeight * size, zeroWidth);
+		g2d.drawLine(zeroHeight, zeroWidth - oneMeterWidth * size, zeroHeight - oneMeterHeight * size, zeroWidth);
 	}
 
 	private void drawCouple(Couple cpl)
@@ -142,7 +151,7 @@ public class Picture
 	{
 		return img;
 	}
-	
+
 	public void addCouple(Couple couple)
 	{
 		if (couples.size() < numberOfCouples)
